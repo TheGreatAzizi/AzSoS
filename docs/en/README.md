@@ -11,6 +11,7 @@ This folder contains the English version of the GitHub documentation. Every page
 - [Content discovery](CONTENT_DISCOVERY.md)
 - [Content sources](CONTENT_SOURCES.md)
 - [Package publishing](PUBLISHING_PACKAGES.md)
+- [Submit country/community packages](../package-submission/submit-country-package.en.md)
 - [Package authoring](PACKAGE_AUTHORING.md)
 - [GitHub publishing](GITHUB_PUBLISHING.md)
 - [Registry format](REGISTRY.md)

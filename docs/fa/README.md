@@ -11,6 +11,7 @@
 - [کشف محتوا](CONTENT_DISCOVERY.md)
 - [سورس‌های محتوا](CONTENT_SOURCES.md)
 - [انتشار بسته‌ها](PUBLISHING_PACKAGES.md)
+- [ارسال پکیج کشوری/جامعه](../package-submission/submit-country-package.fa.md)
 - [ساخت بسته](PACKAGE_AUTHORING.md)
 - [انتشار روی GitHub](GITHUB_PUBLISHING.md)
 - [فرمت Registry](REGISTRY.md)
