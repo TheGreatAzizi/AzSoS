@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import sys
 import tempfile
 import threading
 import webbrowser
@@ -39,11 +40,31 @@ from azsos_core.package import (
 APP_TITLE = "AZSOS Desktop"
 DEFAULT_LIBRARY = Path.home() / "AZSOS" / "library"
 DEFAULT_CONFIG = Path.home() / "AZSOS" / "config.json"
+APP_ICON_PATH = "assets/azsos.ico"
+
+
+def resource_path(relative_path: str) -> str:
+    """Return a file path that works in development and inside PyInstaller onefile builds."""
+    if hasattr(sys, "_MEIPASS"):
+        return str(Path(sys._MEIPASS) / relative_path)
+    return str(Path(__file__).resolve().parent / relative_path)
+
+
+def set_window_icon(window: tk.Tk | tk.Toplevel) -> None:
+    """Set the AZSOS window icon when assets/azsos.ico is available."""
+    try:
+        icon_path = resource_path(APP_ICON_PATH)
+        if Path(icon_path).exists():
+            window.iconbitmap(default=icon_path)
+    except Exception:
+        # Icon loading should never stop the app from starting.
+        pass
 
 
 class AZSOSApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
+        set_window_icon(self)
         self.title(APP_TITLE)
         self.geometry("1240x820")
         self.minsize(1000, 680)
@@ -1095,6 +1116,7 @@ class AZSOSApp(tk.Tk):
 
     def _show_updates_window(self, updates: list[RemoteUpdate]) -> None:
         window = tk.Toplevel(self)
+        set_window_icon(window)
         window.title("AZSOS updates")
         window.geometry("820x420")
         window.minsize(720, 360)
