@@ -1,0 +1,21 @@
+{
+  "format": "azsos.registry.v1",
+  "source": "azsos-ir-packages",
+  "packages": [
+    {
+      "name": "first-aid-demo.azsos",
+      "title": "کمک‌های اولیه - نمونه",
+      "id": "first-aid.fa.demo",
+      "version": "0.1.0",
+      "language": "fa",
+      "publisher": {
+        "name": "AZSOS Demo Publisher",
+        "fingerprint": "B424 7DD3 7534 84C2 056E 5F3D 6A7A 2D52"
+      },
+      "size_bytes": 6826,
+      "sha256": "f659edb5215a2dd3cfb44df3e236ffacf111c0cc3b59d380fb5ba83b9847725b",
+      "download_url": "https://raw.githubusercontent.com/TheGreatAzizi/AzSoS/IR-packages/packages/first-aid-demo.azsos",
+      "source": "azsos-ir-packages"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "format": "azsos.registry.v1",
+  "source": "azsos-ir-packages",
+  "packages": [
+    {
+      "name": "first-aid-basic-fa.azsos",
+      "title": "کمک‌های اولیه پایه",
+      "id": "first-aid.fa.basic",
+      "version": "0.1.0",
+      "language": "fa",
+      "publisher": {
+        "name": "AZSOS Demo Publisher",
+        "fingerprint": "ABCD 1234 EFGH 5678"
+      },
+      "size_bytes": 123456,
+      "sha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "download_url": "https://raw.githubusercontent.com/TheGreatAzizi/AzSoS/IR-packages/first-aid-basic-fa.azsos",
+      "page_url": "https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages",
+      "source": "azsos-ir-packages"
+    }
+  ]
+}

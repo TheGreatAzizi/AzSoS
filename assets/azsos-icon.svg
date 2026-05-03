@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="AZSOS icon">
+  <rect width="512" height="512" rx="96" fill="#111827"/>
+  <path d="M256 86l154 298H102L256 86z" fill="#f9fafb"/>
+  <path d="M256 164l81 157H175l81-157z" fill="#111827"/>
+  <text x="256" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#f9fafb">SOS</text>
+</svg>

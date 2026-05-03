@@ -1,0 +1,13 @@
+{
+  "format": "azsos.update.v1",
+  "name": "AZSOS app updates",
+  "updates": [
+    {
+      "name": "AZSOS-Desktop-v0.3.3.exe",
+      "version": "0.3.3",
+      "download_url": "./releases/AZSOS-Desktop-v0.3.3.exe",
+      "sha256": "PUT_SHA256_HERE",
+      "notes": "Windows desktop build"
+    }
+  ]
+}
