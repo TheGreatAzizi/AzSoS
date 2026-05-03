@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.5
+
+- Improved the in-app Docs tab with Markdown-style rendering.
+- Added styled headings, lists, code blocks, inline code, links, checklists, and callouts.
+- Rewrote the in-app English manual to be friendlier and easier to scan.
+- Added a Copy Markdown action for documentation topics.
+
 ## 0.3.4
 
 - Changed in-app Docs content to English.

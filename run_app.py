@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import tempfile
 import threading
@@ -263,6 +264,7 @@ class AZSOSApp(tk.Tk):
         ttk.Button(toolbar, text="Search docs", command=self.search_docs).pack(side=LEFT, padx=(6, 0))
         ttk.Button(toolbar, text="Show all", command=self.reset_docs_search).pack(side=LEFT, padx=(6, 0))
         ttk.Button(toolbar, text="Copy topic", command=self.copy_current_doc).pack(side=LEFT, padx=(6, 0))
+        ttk.Button(toolbar, text="Copy Markdown", command=self.copy_current_doc_markdown).pack(side=LEFT, padx=(6, 0))
         ttk.Button(toolbar, text="Save manual", command=self.save_manual_file).pack(side=LEFT, padx=(6, 0))
         ttk.Button(toolbar, text="Open docs folder", command=self.open_docs_folder).pack(side=LEFT, padx=(6, 0))
         ttk.Button(toolbar, text="Open GitHub", command=lambda: webbrowser.open("https://github.com/TheGreatAzizi/AzSoS")).pack(side=RIGHT)
@@ -270,8 +272,8 @@ class AZSOSApp(tk.Tk):
         hint = ttk.Label(
             parent,
             text=(
-                "In-app documentation: installing and getting content, creating packages, publishing on GitHub, "
-                "offline sharing, publisher trust, software updates, common errors, and CLI commands."
+                "In-app Markdown manual: quick start, content sources, package creation, GitHub publishing, "
+                "offline sharing, publisher trust, updates, common errors, and CLI commands."
             ),
             foreground="#666",
             wraplength=1100,
@@ -297,8 +299,21 @@ class AZSOSApp(tk.Tk):
         self.docs_view.configure(yscrollcommand=yscroll.set)
         self.docs_view.pack(side=LEFT, fill=BOTH, expand=True)
         yscroll.pack(side=RIGHT, fill=tk.Y)
-        self.docs_view.tag_configure("title", font=("Segoe UI", 16, "bold"), spacing3=10)
-        self.docs_view.tag_configure("body", spacing1=2, spacing3=8)
+        self.docs_view.tag_configure("h1", font=("Segoe UI", 20, "bold"), spacing1=6, spacing3=12)
+        self.docs_view.tag_configure("h2", font=("Segoe UI", 16, "bold"), spacing1=12, spacing3=8)
+        self.docs_view.tag_configure("h3", font=("Segoe UI", 12, "bold"), spacing1=10, spacing3=5)
+        self.docs_view.tag_configure("paragraph", font=("Segoe UI", 10), spacing1=2, spacing3=6)
+        self.docs_view.tag_configure("list_item", font=("Segoe UI", 10), lmargin1=22, lmargin2=42, spacing3=3)
+        self.docs_view.tag_configure("number_item", font=("Segoe UI", 10), lmargin1=22, lmargin2=48, spacing3=3)
+        self.docs_view.tag_configure("code_block", font=("Consolas", 10), background="#f3f4f6", lmargin1=16, lmargin2=16, spacing1=2, spacing3=2)
+        self.docs_view.tag_configure("inline_code", font=("Consolas", 10), background="#eef2f7")
+        self.docs_view.tag_configure("bold", font=("Segoe UI", 10, "bold"))
+        self.docs_view.tag_configure("link", foreground="#0b57d0", underline=True)
+        self.docs_view.tag_configure("callout_title", font=("Segoe UI", 10, "bold"), background="#fff7d6", lmargin1=16, lmargin2=16, spacing1=5)
+        self.docs_view.tag_configure("callout_body", font=("Segoe UI", 10), background="#fffdf2", lmargin1=16, lmargin2=16, spacing3=5)
+        self.docs_view.tag_configure("warning_title", font=("Segoe UI", 10, "bold"), background="#ffe5e5", lmargin1=16, lmargin2=16, spacing1=5)
+        self.docs_view.tag_configure("warning_body", font=("Segoe UI", 10), background="#fff2f2", lmargin1=16, lmargin2=16, spacing3=5)
+        self.docs_view.tag_configure("hr", foreground="#999", spacing1=8, spacing3=8)
         self._make_text_readonly(self.docs_view)
         self._add_text_clipboard_menu(self.docs_view, writable=False)
 
@@ -358,11 +373,102 @@ class AZSOSApp(tk.Tk):
         topic = self.selected_doc_topic()
         self.docs_view.delete("1.0", END)
         if not topic:
-            self.docs_view.insert(END, "Select a topic from the left.")
+            self.docs_view.insert(END, "Select a topic from the left.", ("paragraph",))
             return
         title, body = topic
-        self.docs_view.insert(END, title + "\n", "title")
-        self.docs_view.insert(END, body, "body")
+        self._render_doc_markdown(f"# {title}\n\n{body}")
+
+    def _insert_markdown_inline(self, widget: tk.Text, text: str, base_tags: tuple[str, ...]) -> None:
+        pattern = re.compile(r"(\*\*[^*]+\*\*|`[^`]+`|https?://\S+)")
+        position = 0
+        for match in pattern.finditer(text):
+            if match.start() > position:
+                widget.insert(END, text[position:match.start()], base_tags)
+            token = match.group(0)
+            if token.startswith("**") and token.endswith("**"):
+                widget.insert(END, token[2:-2], base_tags + ("bold",))
+            elif token.startswith("`") and token.endswith("`"):
+                widget.insert(END, token[1:-1], base_tags + ("inline_code",))
+            elif token.startswith("http"):
+                widget.insert(END, token, base_tags + ("link",))
+            else:
+                widget.insert(END, token, base_tags)
+            position = match.end()
+        if position < len(text):
+            widget.insert(END, text[position:], base_tags)
+
+    def _render_doc_markdown(self, markdown: str) -> None:
+        view = self.docs_view
+        in_code = False
+        current_callout: str | None = None
+        for raw_line in markdown.splitlines():
+            line = raw_line.rstrip("\n")
+            stripped = line.strip()
+
+            if stripped.startswith("```"):
+                in_code = not in_code
+                if not in_code:
+                    view.insert(END, "\n")
+                continue
+
+            if in_code:
+                view.insert(END, line + "\n", ("code_block",))
+                continue
+
+            if not stripped:
+                view.insert(END, "\n")
+                current_callout = None
+                continue
+
+            if stripped == "---":
+                view.insert(END, "─" * 72 + "\n", ("hr",))
+                continue
+
+            if stripped.startswith("> [!"):
+                label = stripped[4:].strip("[]!").upper()
+                icon = {
+                    "TIP": "💡 Tip",
+                    "NOTE": "ℹ️ Note",
+                    "IMPORTANT": "⭐ Important",
+                    "WARNING": "⚠️ Warning",
+                    "CAUTION": "⛔ Caution",
+                }.get(label, label.title())
+                current_callout = "warning" if label in {"WARNING", "CAUTION"} else "callout"
+                view.insert(END, f"{icon}\n", (f"{current_callout}_title",))
+                continue
+
+            if stripped.startswith("> "):
+                tag = "warning_body" if current_callout == "warning" else "callout_body"
+                self._insert_markdown_inline(view, stripped[2:] + "\n", (tag,))
+                continue
+
+            if stripped.startswith("### "):
+                self._insert_markdown_inline(view, stripped[4:] + "\n", ("h3",))
+                continue
+            if stripped.startswith("## "):
+                self._insert_markdown_inline(view, stripped[3:] + "\n", ("h2",))
+                continue
+            if stripped.startswith("# "):
+                self._insert_markdown_inline(view, stripped[2:] + "\n", ("h1",))
+                continue
+
+            task = re.match(r"^- \[( |x|X)\]\s+(.*)$", stripped)
+            if task:
+                marker = "☑" if task.group(1).lower() == "x" else "☐"
+                self._insert_markdown_inline(view, f"{marker} {task.group(2)}\n", ("list_item",))
+                continue
+
+            bullet = re.match(r"^[-*]\s+(.*)$", stripped)
+            if bullet:
+                self._insert_markdown_inline(view, f"• {bullet.group(1)}\n", ("list_item",))
+                continue
+
+            number = re.match(r"^(\d+)\.\s+(.*)$", stripped)
+            if number:
+                self._insert_markdown_inline(view, f"{number.group(1)}. {number.group(2)}\n", ("number_item",))
+                continue
+
+            self._insert_markdown_inline(view, stripped + "\n", ("paragraph",))
 
     def copy_current_doc(self) -> None:
         text = self.docs_view.get("1.0", "end-1c")
@@ -370,6 +476,14 @@ class AZSOSApp(tk.Tk):
             return
         self._clipboard_set(text)
         self.status.set("Documentation topic copied")
+
+    def copy_current_doc_markdown(self) -> None:
+        topic = self.selected_doc_topic()
+        if not topic:
+            return
+        title, body = topic
+        self._clipboard_set(f"# {title}\n\n{body}\n")
+        self.status.set("Documentation Markdown copied")
 
     def save_manual_file(self) -> None:
         filename = filedialog.asksaveasfilename(

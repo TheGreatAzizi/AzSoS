@@ -1,48 +1,68 @@
-"""In-app English documentation for AZSOS Desktop."""
+"""In-app English Markdown documentation for AZSOS Desktop."""
 from __future__ import annotations
 
 DOC_TOPICS: list[tuple[str, str]] = [
     (
         "Quick start",
         """
-AZSOS is built to help people download important content before an outage, keep it on their computer, search it offline, and share it locally when the internet is unavailable or unreliable.
+### The 60-second flow
 
-Fast path:
+1. **Open `Get content`.**
+2. Click **Fetch selected** to scan the default AZSOS package source.
+3. Select one or more packages and click **Install selected**.
+4. Open **Installed**, choose a package, then click **Open package**.
+5. Use **Search selected** or **Search all** to find text offline.
+6. To share without internet, open **Share** and click **Start**.
 
-1. Open the Get content tab.
-2. Click Fetch selected to scan the default AZSOS package source.
-3. Select one or more remote packages and click Install selected.
-4. Open the Installed tab and select an installed package.
-5. Use Open package to read it, or Search selected / Search all to find text offline.
-6. To share packages without internet, open the Share tab and click Start.
+> [!TIP]
+> If somebody gives you a `.azsos` file on USB, Telegram, LAN, or Bluetooth, you do not need the internet. Use **Installed → Import .azsos**.
 
-If you already have a .azsos file, use Installed -> Import .azsos. No internet connection is required for local imports.
+### What you get after installation
+
+- A local copy of the content under `~/AZSOS/library/`
+- Offline search when the package includes `search.sqlite`
+- Verification status, publisher information, and package metadata
+- Export and local sharing options
 """.strip(),
     ),
     (
         "What AZSOS does",
         """
-AZSOS is an offline-first emergency content cache. It stores content in signed .azsos packages so users can verify, search, read, export, and share important information without depending on a central server.
+### One sentence
 
-Main goals:
+**AZSOS is an offline-first emergency content cache for trusted `.azsos` packages.**
 
-- Download content while internet is available.
-- Keep that content usable when internet access is cut off or unstable.
-- Verify package integrity before installation.
-- Search installed content locally.
-- Share packages over Wi-Fi, hotspot, LAN, USB drives, Telegram, Git, or any other file-transfer path.
-- Let publishers distribute curated, signed packages.
+It helps users download important content while the internet works, keep it locally, verify it, search it, and share it on a local network when the internet is unavailable or unreliable.
 
-AZSOS is not a VPN and not a messenger. It is a trusted offline cache for knowledge and emergency content.
+### AZSOS is useful for
+
+- First-aid and emergency guides
+- Digital safety guides
+- Family preparedness checklists
+- Offline business continuity kits
+- Local contact lists and maps
+- Curated education packs
+- Any small, source-aware content that should survive outages
+
+### AZSOS is not
+
+- A VPN
+- A messenger
+- A browser replacement
+- A central cloud service
+
+> [!NOTE]
+> The main design rule is simple: **download once, verify once, use and share offline many times.**
 """.strip(),
     ),
     (
         "What a .azsos file is",
         """
-A .azsos file is a controlled ZIP-based package with a strict internal structure.
+### Package format
 
-Typical layout:
+A `.azsos` file is a controlled ZIP-based package with a strict internal structure.
 
+```text
 first-aid.azsos
   manifest.json
   hashes.json
@@ -52,147 +72,132 @@ first-aid.azsos
     index.html
     pages/
     assets/
+```
 
-Important files:
+### Important files
 
-manifest.json
-  Package metadata: title, version, language, publisher, start page, and format version.
+- **`manifest.json`** — package title, version, language, publisher, entry page, and format version.
+- **`hashes.json`** — SHA-256 hashes for package files.
+- **`signature.ed25519`** — publisher signature over the manifest and hashes.
+- **`search.sqlite`** — optional offline search index.
+- **`content/`** — the files the user reads.
 
-hashes.json
-  SHA-256 hashes for files inside the package. AZSOS uses this to detect corruption or tampering.
-
-signature.ed25519
-  The publisher's Ed25519 signature over the manifest and hashes.
-
-search.sqlite
-  Optional offline search index.
-
-content/
-  The actual content the user reads.
-
-During installation, AZSOS rejects dangerous ZIP paths such as ../evil.txt so a package cannot overwrite files outside the AZSOS library.
+> [!WARNING]
+> AZSOS rejects unsafe ZIP paths such as `../evil.txt`. A package must not be able to overwrite files outside the AZSOS library.
 """.strip(),
     ),
     (
         "Installed tab",
         """
-The Installed tab manages packages that are already installed on this computer.
+### Purpose
 
-Buttons:
+The **Installed** tab manages packages that are already on this computer.
 
-Import .azsos
-  Select a local .azsos file. AZSOS verifies and installs it.
+### Main actions
 
-Verify file
-  Check whether a file is valid without installing it.
+- **Import .azsos** — choose a local `.azsos` file, verify it, and install it.
+- **Verify file** — check a package without installing it.
+- **Open package** — open the selected package's entry page in the default browser.
+- **Export selected** — export an installed package back to a `.azsos` file.
+- **Delete package** — remove the selected package from the AZSOS library.
+- **Trust publisher** — mark the selected publisher fingerprint as trusted on this device.
+- **Refresh** — reload the installed package list.
+- **Open library folder** — open `~/AZSOS/library/`.
 
-Open package
-  Open the selected package's start page in the default browser.
-
-Export selected
-  Export an installed package back to a .azsos file so you can send it to someone else.
-
-Delete package
-  Remove the selected package from the AZSOS library. This does not delete the original file outside the library.
-
-Trust publisher
-  Mark the selected package publisher's fingerprint as trusted on this device.
-
-Refresh
-  Reload the installed package list.
-
-Open library folder
-  Open the folder where AZSOS stores installed packages.
+> [!IMPORTANT]
+> **Delete package** removes the installed copy from AZSOS. It does not delete the original file you imported from another folder.
 """.strip(),
     ),
     (
         "Offline search",
         """
-You can search installed packages from the Installed tab.
+### How search works
 
-Search selected
-  Search only inside the selected package.
+AZSOS searches the local package index. No server is contacted.
 
-Search all
-  Search across all installed packages.
+### Buttons
 
-Open result
-  Open the selected search result.
+- **Search selected** — search only inside the selected package.
+- **Search all** — search across all installed packages.
+- **Open result** — open the selected result.
 
-Search tips:
+### Search tips
 
-- Try short keywords first.
-- For Persian text, try both normal spaces and half-spaces when needed.
-- Search quality depends on the package's search.sqlite index. If a publisher did not include an index, results may be incomplete.
+- Start with short keywords: `water`, `burn`, `help`, `تماس`.
+- For Persian content, try both normal spaces and half-spaces when needed.
+- If there are no results, the package may not include `search.sqlite`.
+
+> [!TIP]
+> Package authors should build a search index during packing. Search quality depends on the package, not only the app.
 """.strip(),
     ),
     (
         "Get content tab",
         """
-The Get content tab discovers and installs remote or local packages.
+### Default source
 
-Default package source:
+AZSOS ships with this default content source:
 
+```text
 https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages
+```
 
-Buttons:
+### What the tab does
 
-Fetch selected
-  Scan only the currently selected source.
+The **Get content** tab discovers packages from GitHub branches, releases, direct URLs, local folders, and registry files.
 
-Fetch all
-  Scan every saved source.
+### Common flow
 
-Open source
-  Open the current source URL or folder.
+1. Keep the default source or add a new one.
+2. Click **Fetch selected**.
+3. Select one or more remote packages.
+4. Optional: click **Inspect selected**.
+5. Click **Install selected**.
 
-Reset default
-  Restore the default AZSOS IR packages source.
+### Buttons
 
-Save current
-  Save changes to the current source name and URL.
+- **Fetch selected** — scan only the selected source.
+- **Fetch all** — scan every saved source.
+- **Open source** — open the current source URL or folder.
+- **Reset default** — restore the default AZSOS IR package source.
+- **Save current** — save edits to the selected source.
+- **Add as new** — save the current name and URL as a new source.
+- **Remove** — remove the selected source.
+- **Install selected** — download, verify, and install selected packages.
+- **Inspect selected** — preview manifest, publisher, fingerprint, and SHA-256.
+- **Copy download URL** — copy the package URL.
 
-Add as new
-  Add the current name and URL as a new content source.
-
-Remove
-  Remove the selected source.
-
-Install selected
-  Download, verify, and install selected remote packages.
-
-Inspect selected
-  Download a package temporarily and show its manifest, publisher, fingerprint, and SHA-256 before installation.
-
-Copy download URL
-  Copy the selected package download URL.
+> [!TIP]
+> Prefer a `packages.index.json` registry for public sources. It is faster and avoids GitHub rate limits.
 """.strip(),
     ),
     (
         "Content sources and registries",
         """
-AZSOS understands several source types:
+### Supported source types
 
-1. GitHub branch/tree
-   Example:
-   https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages
+AZSOS can fetch packages from:
 
-2. GitHub Releases
-   If a repository has release assets ending in .azsos, AZSOS can discover them.
+- **GitHub branch/tree**
+- **GitHub Releases**
+- **Direct `.azsos` URL**
+- **Local folder**
+- **`packages.index.json` registry**
 
-3. Direct .azsos URL
-   Example:
-   https://example.com/packs/first-aid.azsos
+### Recommended registry layout
 
-4. Local folder
-   Example:
-   C:\\AZSOS-Packs
+```text
+IR-packages/
+  packages.index.json
+  packages/
+    first-aid.azsos
+    digital-safety.azsos
+    offline-business-kit.azsos
+```
 
-5. packages.index.json
-   The recommended publishing method. It is faster, more stable, and avoids GitHub API rate limits.
+### Minimal `packages.index.json`
 
-Minimal packages.index.json example:
-
+```json
 {
   "format": "azsos.registry.v1",
   "source_name": "azsos-ir-packages",
@@ -206,67 +211,79 @@ Minimal packages.index.json example:
     }
   ]
 }
+```
 
-For GitHub branches, place packages.index.json next to your packages folder whenever possible.
+> [!NOTE]
+> The registry helps users discover files. Trust still comes from package verification, signatures, hashes, and publisher fingerprints.
 """.strip(),
     ),
     (
-        "Getting content during normal access and outages",
+        "Getting content before and during outages",
         """
-During normal internet access:
+### Before an outage
 
-- Publishers upload .azsos packages to GitHub branches, GitHub Releases, direct file hosting, or a self-hosted Git mirror.
-- Users open Get content, fetch the source, and install packages.
-- Installed packages remain available offline.
+- Fetch packages from the default AZSOS source.
+- Install useful packs in advance.
+- Export important packs to USB or external drives.
+- Keep a trusted publisher fingerprint list.
 
-During an outage or weak connectivity:
+### During weak connectivity
 
-- A user who already has packages can open Share and start the local server.
-- Other devices join the same Wi-Fi/hotspot/LAN and download packages from the local URL.
-- If there is no network, use Export selected and copy the .azsos file through USB, external drives, Bluetooth, cables, or any other file-transfer method.
+- Try **Fetch selected** once.
+- If GitHub is slow or rate-limited, use a direct `.azsos` link or a registry mirror.
+- Ask someone who already has the package to use **Share**.
 
-Design rule: download once, verify once, use and share offline many times.
+### During a full outage
+
+- Use **Share** over Wi-Fi, hotspot, or LAN.
+- Use **Export selected** and move files with USB, external drives, Bluetooth, or cables.
+- Import local files using **Installed → Import .azsos**.
+
+> [!IMPORTANT]
+> AZSOS is designed for graceful degradation: internet source → mirror → local network → physical file transfer.
 """.strip(),
     ),
     (
         "Share tab",
         """
-The Share tab publishes installed packages on the local network.
+### What Share does
 
-Start
-  Starts a small HTTP server on this computer.
+The **Share** tab runs a small local HTTP server so other devices on the same network can download your installed packages.
 
-Stop
-  Stops the local server.
-
-Copy URL
-  Copies the local share URL.
-
-QR
-  Generates a QR code for the share URL so phones can open it quickly.
-
-How to use it:
+### Flow
 
 1. Connect this computer to Wi-Fi, hotspot, or LAN.
-2. In AZSOS, open Share and click Start.
-3. Send the shown URL or display the QR code.
-4. Other devices must be on the same network.
-5. They open the URL in a browser and download .azsos files.
+2. Open **Share**.
+3. Click **Start**.
+4. Copy the shown URL or display the QR code.
+5. Other devices open the URL in a browser.
+6. They download `.azsos` files and verify them locally.
 
-Security tip: click Stop when you are done, especially on public networks.
+### Endpoints
+
+```text
+/              simple web page
+/packages.json package list
+/packages/...  package download
+/health        connectivity test
+```
+
+> [!WARNING]
+> Click **Stop** when you are done, especially on public or shared networks.
 """.strip(),
     ),
     (
         "Creating .azsos packages with the CLI",
         """
-AZSOS includes a command-line tool for publishers and content authors.
+### Create a publisher key
 
-Create a publisher key:
-
+```powershell
 python azsos.py keygen --out-dir keys
+```
 
-Build a package:
+### Build a package
 
+```powershell
 python azsos.py pack ^
   --content examples/first-aid/content ^
   --id first-aid.fa ^
@@ -275,281 +292,229 @@ python azsos.py pack ^
   --publisher-name "AZSOS Publisher" ^
   --key keys/publisher_private.pem ^
   --out dist/first-aid.azsos
+```
 
-Verify a package:
+### Verify and install
 
+```powershell
 python azsos.py verify dist/first-aid.azsos
-
-Install from the CLI:
-
 python azsos.py install dist/first-aid.azsos
-
-Search from the CLI:
-
 python azsos.py search water
-
-Start local sharing from the CLI:
-
 python azsos.py serve
+```
 
-Never commit your publisher private key to a public repository. Publish only the public key or fingerprint.
+> [!WARNING]
+> Never commit your publisher private key to a public repository. Publish only the public key or fingerprint.
 """.strip(),
     ),
     (
         "Building packages.index.json",
         """
-A registry file makes package discovery faster and more reliable.
+### Why registries matter
 
-Recommended IR-packages branch layout:
+A registry makes discovery faster, clearer, and more reliable.
 
-IR-packages/
-  packages.index.json
-  packages/
-    first-aid.azsos
-    digital-safety.azsos
-    offline-business-kit.azsos
+### Build a registry
 
-Build a registry with the CLI:
-
+```powershell
 python azsos.py registry build ^
   --packages-dir ./packages ^
   --base-url https://raw.githubusercontent.com/TheGreatAzizi/AzSoS/IR-packages/packages ^
   --out packages.index.json ^
   --source-name azsos-ir-packages
+```
 
-Then push these files to:
+### Publish to GitHub
 
+```text
 https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages
+```
 
-Benefits:
+### Benefits
 
-- Fetch is faster.
-- AZSOS needs the GitHub API less often.
-- SHA-256 values are listed in advance.
-- Titles, versions, and publisher names can display more clearly.
+- Faster fetch
+- Less GitHub API usage
+- Lower chance of `HTTP Error 403: rate limit exceeded`
+- Prelisted SHA-256 hashes
+- Cleaner titles, versions, and publisher metadata
 """.strip(),
     ),
     (
         "Software updates",
         """
-The app has a Check updates button in the header.
+### Update source
 
-Default update source:
+The **Check updates** button checks:
 
+```text
 https://github.com/TheGreatAzizi/AzSoS/tree/UPDATE
+```
 
-AZSOS looks for:
+### Supported update files
 
-- update.index.json
-- .exe files
-- .msi files
-- .zip files
+- `update.index.json`
+- `.exe`
+- `.msi`
+- `.zip`
 - GitHub Releases as a fallback
 
-Behavior:
+### Behavior
 
 1. AZSOS finds update candidates.
 2. The user selects one.
-3. The file is downloaded to:
+3. The file is downloaded to `~/AZSOS/updates/`.
+4. AZSOS does **not** run installers automatically.
 
-~/AZSOS/updates/
-
-4. AZSOS does not run installers automatically. The user opens the installer or archive manually.
-
-This is safer than silently executing downloaded files.
+> [!IMPORTANT]
+> Manual execution is intentional. Silently running downloaded installers is not safe.
 """.strip(),
     ),
     (
         "Security and trust",
         """
-AZSOS checks several layers before installation:
+### Verification layers
 
-1. ZIP structure
-   Dangerous paths such as ../evil.txt are rejected.
+AZSOS checks multiple layers before installation:
 
-2. Hashes
-   Every packaged file is checked against hashes.json.
+1. **ZIP safety** — rejects dangerous paths such as `../evil.txt`.
+2. **Hashes** — verifies files against `hashes.json`.
+3. **Signature** — verifies the Ed25519 signature.
+4. **Fingerprint** — identifies publishers by public-key fingerprint.
+5. **Local trust** — lets users mark known fingerprints as trusted.
 
-3. Ed25519 signature
-   The manifest and hashes must match the publisher signature.
+### Status meanings
 
-4. Publisher fingerprint
-   Publishers are identified by fingerprints, not only display names.
+- **Valid package** — structure, hashes, and signature are correct.
+- **Unknown publisher** — package is valid, but the fingerprint is not trusted on this device.
+- **Trusted publisher** — fingerprint was previously trusted by the user.
+- **Invalid package** — file is broken, incomplete, tampered with, or unsafe.
 
-5. Trust publisher
-   After verifying a fingerprint through a trusted channel, users can mark that publisher as trusted on their device.
-
-Status meanings:
-
-Valid package
-  The file is structurally valid and the signature is correct.
-
-Unknown publisher
-  The file is valid, but the publisher has not been trusted on this device.
-
-Trusted publisher
-  This publisher fingerprint was previously trusted on this device.
-
-Invalid package
-  The file is broken, incomplete, tampered with, or unsafe.
-
-Important rule: trust a publisher only after checking the fingerprint through an official site, official channel, trusted contact, or in-person verification.
+> [!WARNING]
+> Trust a publisher only after checking the fingerprint through an official website, official channel, trusted contact, or in-person verification.
 """.strip(),
     ),
     (
         "Common errors",
         """
-No .azsos packages found
-  The selected source did not contain any discoverable .azsos package. Check the branch, file paths, and packages.index.json.
+### No `.azsos` packages found
 
-HTTP Error 403: rate limit exceeded
-  GitHub limited unauthenticated requests. Best fix: publish packages.index.json. Temporary fix: set a GitHub token.
+The selected source did not contain discoverable packages. Check the branch, file paths, and `packages.index.json`.
 
-PowerShell example:
+### `HTTP Error 403: rate limit exceeded`
 
+GitHub limited unauthenticated requests.
+
+Best fixes:
+
+- Publish `packages.index.json`.
+- Use a raw registry URL.
+- Set a GitHub token temporarily.
+
+```powershell
 $env:AZSOS_GITHUB_TOKEN="ghp_xxx"
 python run_app.py
+```
 
-Not found / 404
-  The repository, branch, path, or filename is wrong.
+### `Not found / 404`
 
-Invalid package
-  The file is incomplete, corrupted, tampered with, or incompatible with the current AZSOS format.
+The repository, branch, path, or filename is wrong.
 
-Missing entry
-  manifest.json points to a start page that does not exist inside the package.
+### Invalid package
 
-Search returns no results
-  The package may not include search.sqlite, or the search term is too specific.
+The package is incomplete, corrupted, tampered with, or incompatible with the current AZSOS format.
 
-Local Share does not open
-  Devices must be on the same network. Windows Firewall may require an Allow action.
+### Local Share does not open
+
+Devices must be on the same network. Windows Firewall may ask you to allow Python or AZSOS.
 """.strip(),
     ),
     (
         "Important folders",
         """
-AZSOS stores user data under the user's home folder.
+### User data
 
-Package library:
-~/AZSOS/library/
+AZSOS stores local data under the user's home folder.
 
-Settings and content sources:
-~/AZSOS/config.json
+```text
+~/AZSOS/library/    installed packages
+~/AZSOS/config.json settings and content sources
+~/AZSOS/updates/    downloaded software updates
+```
 
-Downloaded updates:
-~/AZSOS/updates/
+### Reset local installation
 
-Temporary downloads may be stored in the system temp folder.
+1. Export any important packages first.
+2. Close AZSOS.
+3. Delete `~/AZSOS`.
+4. Start AZSOS again.
 
-To open the library from the app:
-
-Installed -> Open library folder
-
-To reset the local AZSOS installation, close the app and delete ~/AZSOS. Export important packages first.
+> [!CAUTION]
+> Deleting `~/AZSOS` removes installed packages, trusted publishers, saved sources, and downloaded updates.
 """.strip(),
     ),
     (
         "Publisher checklist",
         """
+### Content quality
+
 Good packages are small, clear, source-aware, and easy to verify.
 
-Recommendations:
-
-- Keep content short and readable offline.
+- Keep text readable offline.
 - Compress images.
 - Cite sources inside the content.
 - Add review dates for emergency or medical information.
-- Use clear versions: 0.1.0, 0.2.0, 1.0.0.
-- Keep package IDs stable, for example first-aid.fa.basic.
+- Use stable package IDs, for example `first-aid.fa.basic`.
 - Protect the publisher private key.
-- Publish the public fingerprint on official channels.
-- Generate packages.index.json.
-- Test verify, install, search, and open before publishing.
+- Publish the fingerprint on official channels.
+- Generate `packages.index.json`.
 
-Pre-release checklist:
+### Pre-release checklist
 
-[ ] .azsos file was created
-[ ] verify succeeds
-[ ] install succeeds
-[ ] search works
-[ ] Open package opens the correct start page
-[ ] content includes sources and dates where needed
-[ ] registry was generated
-[ ] raw download links in the registry are correct
+- [ ] `.azsos` file was created
+- [ ] `verify` succeeds
+- [ ] `install` succeeds
+- [ ] Search works
+- [ ] **Open package** opens the correct page
+- [ ] Content includes sources and review dates where needed
+- [ ] Registry was generated
+- [ ] Raw download links are correct
 """.strip(),
     ),
     (
         "Useful CLI commands",
         """
-Show help:
-
+```powershell
 python azsos.py --help
-
-Create a key:
-
 python azsos.py keygen --out-dir keys
-
-Build a package:
-
-python azsos.py pack --content ./content --id my.pack.fa --title "Title" --version 0.1.0 --publisher-name "Publisher" --key keys/publisher_private.pem --out my-pack.azsos
-
-Verify a package:
-
 python azsos.py verify my-pack.azsos
-
-Install a package:
-
 python azsos.py install my-pack.azsos
-
-Delete an installed package:
-
 python azsos.py delete <package-id-or-installed-path>
-
-Search:
-
 python azsos.py search help
-
-Fetch a catalog:
-
 python azsos.py catalog fetch
-
-Inspect a remote package:
-
 python azsos.py catalog inspect <url-or-index>
-
-Install from a catalog:
-
 python azsos.py catalog install <url-or-index>
-
-Build a registry:
-
 python azsos.py registry build --packages-dir ./packages --base-url <raw-base-url> --out packages.index.json
+```
+
+> [!TIP]
+> Use the GUI for normal users and the CLI for publishers, testing, automation, and registry generation.
 """.strip(),
     ),
     (
         "Project links",
         """
-Main repository:
-https://github.com/TheGreatAzizi/AzSoS
+### Main links
 
-Content packages branch:
-https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages
+- **Main repository:** https://github.com/TheGreatAzizi/AzSoS
+- **Content packages branch:** https://github.com/TheGreatAzizi/AzSoS/tree/IR-packages
+- **Software update branch:** https://github.com/TheGreatAzizi/AzSoS/tree/UPDATE
 
-Software update branch:
-https://github.com/TheGreatAzizi/AzSoS/tree/UPDATE
+### Author and community
 
-X / Twitter:
-https://x.com/the_azzi
-
-GitHub profile:
-https://github.com/TheGreatAzizi
-
-Self-hosted Git:
-https://git.theazizi.ir/TheAzizi
-
-Telegram:
-https://t.me/luluch_code
+- **X / Twitter:** https://x.com/the_azzi
+- **GitHub profile:** https://github.com/TheGreatAzizi
+- **Self-hosted Git:** https://git.theazizi.ir/TheAzizi
+- **Telegram:** https://t.me/luluch_code
 """.strip(),
     ),
 ]

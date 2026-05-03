@@ -157,3 +157,5 @@ def test_in_app_manual_has_core_topics() -> None:
     assert "Security and trust" in titles
     assert ".azsos" in manual
     assert "packages.index.json" in manual
+    assert "```" in manual
+    assert "> [!TIP]" in manual
