@@ -1,6 +1,7 @@
-# AZSOS Links
+# Moved
 
-- X: https://x.com/the_azzi
-- GitHub: https://github.com/TheGreatAzizi
-- Self-hosted Git: https://git.theazizi.ir/TheAzizi
-- Telegram: https://t.me/luluch_code
+> Language: **English** | [فارسی](fa/LINKS.md)
+
+This file is kept for compatibility.
+
+New location: [en/LINKS.md](en/LINKS.md)

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.6
+
+- Split GitHub documentation into fully separate English and Persian versions.
+- Added root `README_EN.md` and `README_FA.md`.
+- Replaced the root `README.md` with a language selector.
+- Added `docs/en/` and `docs/fa/` documentation trees.
+- Added language cross-links at the top of every GitHub documentation page.
+- Kept legacy documentation filenames as redirects for compatibility.
+
 ## 0.3.5
 
 - Improved the in-app Docs tab with Markdown-style rendering.
