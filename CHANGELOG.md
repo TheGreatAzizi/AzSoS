@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.7
+
+- Added multilingual community package submission documentation.
+- Added country-package contribution guides in English, Persian, Arabic, and Turkish.
+- Added a package submission section to the GitHub pull request template.
+- Linked the new submission docs from root README files and documentation indexes.
+
 ## 0.3.6
 
 - Split GitHub documentation into fully separate English and Persian versions.

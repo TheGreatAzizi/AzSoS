@@ -41,6 +41,7 @@ https://github.com/TheGreatAzizi/AzSoS/tree/UPDATE
 - [Persian documentation index](docs/fa/README.md)
 - [User guide](docs/en/USER_GUIDE.md)
 - [Package publishing guide](docs/en/PUBLISHING_PACKAGES.md)
+- [Submit country packages](docs/package-submission/submit-country-package.en.md)
 - [GitHub publishing guide](docs/en/GITHUB_PUBLISHING.md)
 - [Update publishing guide](docs/en/UPDATES.md)
 - [Format specification](docs/en/FORMAT.md)

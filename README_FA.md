@@ -41,6 +41,7 @@ https://github.com/TheGreatAzizi/AzSoS/tree/UPDATE
 - [English documentation index](docs/en/README.md)
 - [راهنمای کاربر](docs/fa/USER_GUIDE.md)
 - [راهنمای انتشار بسته‌ها](docs/fa/PUBLISHING_PACKAGES.md)
+- [ارسال پکیج کشوری](docs/package-submission/submit-country-package.fa.md)
 - [راهنمای انتشار روی GitHub](docs/fa/GITHUB_PUBLISHING.md)
 - [راهنمای انتشار آپدیت نرم‌افزار](docs/fa/UPDATES.md)
 - [مشخصات فرمت](docs/fa/FORMAT.md)

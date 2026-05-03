@@ -10,3 +10,6 @@ This repository keeps the main documentation in **two separate language versions
 - [راهنمای فارسی](README_FA.md)
 
 The in-app Docs tab remains English-only, while GitHub documentation is maintained in both English and Persian.
+
+
+Community package submission guides are also available in multiple languages: [English](docs/package-submission/submit-country-package.en.md), [فارسی](docs/package-submission/submit-country-package.fa.md), [العربية](docs/package-submission/submit-country-package.ar.md), [Türkçe](docs/package-submission/submit-country-package.tr.md).
