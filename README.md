@@ -1,5 +1,5 @@
 # AZSOS Documentation
-
+[![DevSponsors](https://devsponsors.github.io/assets/badges/sponsor.svg)](https://devsponsors.github.io)
 > Choose a language: [English](README_EN.md) | [فارسی](README_FA.md)
 
 AZSOS is an offline-first emergency content cache for trusted `.azsos` packages.
